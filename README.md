@@ -91,7 +91,37 @@ There are no lectures in week 42, on account of the fall holiday.
 
 ### Exercise class locations
 
-TBA
+Ignore the classroom and "hold" assignments on the official KU schedule.
+Exercise classes are held in the following rooms. You are free to go where you
+wish, but try to distribute the load evenly.
+
+#### 10:00-12:00
+
+TODO: this will be cut down to 4 once we have figured out which are closest.
+
+- NBB 2.2.H.142
+
+- NBB 2.3.I.164
+
+- NBB 1.1.E.015
+
+- NBB 1.01.B.080
+
+- NBB 1.01.B.082
+
+- NBB 1.01.F.64
+
+- NBB 1.01.F.70
+
+#### 15:00-17:00
+
+- HCØ Aud 04
+
+- HCØ Aud 05
+
+- HCØ Aud 06
+
+- HCØ Aud 10
 
 ## Assignments
 
