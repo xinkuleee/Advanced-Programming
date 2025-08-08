@@ -93,7 +93,8 @@ There are no lectures in week 42, on account of the fall holiday.
 
 Ignore the classroom and "hold" assignments on the official KU schedule.
 Exercise classes are held in the following rooms. You are free to go where you
-wish, but try to distribute the load evenly.
+wish, but try to distribute the load evenly. Each room will have a TA to help
+with exercises and assignments.
 
 #### 10:00-12:00
 
