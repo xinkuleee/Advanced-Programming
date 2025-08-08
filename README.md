@@ -97,14 +97,6 @@ wish, but try to distribute the load evenly.
 
 #### 10:00-12:00
 
-TODO: this will be cut down to 4 once we have figured out which are closest.
-
-- NBB 2.2.H.142
-
-- NBB 2.3.I.164
-
-- NBB 1.1.E.015
-
 - NBB 1.01.B.080
 
 - NBB 1.01.B.082
@@ -112,6 +104,11 @@ TODO: this will be cut down to 4 once we have figured out which are closest.
 - NBB 1.01.F.64
 
 - NBB 1.01.F.70
+
+The following room is also booked, and will be staffed with a teacher in at
+least the first week (perhaps more if necessary).
+
+- NBB 1.1.E.015
 
 #### 15:00-17:00
 
