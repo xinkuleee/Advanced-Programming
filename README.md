@@ -1,5 +1,7 @@
 # Advanced Programming 2025
 
+<img align="right" width="300" src="https://github.com/diku-dk/ap-e2024-pub/assets/55833/2a499f62-386c-4fbb-a66e-108a027364a0">
+
 Welcome to the course website for Advanced Programming (AP) 2025! All material
 and general information will be provided here. Announcements, assignment handin,
 and the discussion forum remains on Absalon. While this website is a Git
