@@ -73,13 +73,13 @@ Haskell programs that solve real problems.
 
 The course consists of two lectures and two exercise classes every week.
 
-The lectures are on Tuesday 10:00-12:00 in Aud 01 at HCØ and Thursday
-13:00-15:00 in Store UP1 at DIKU.
+The lectures are on Tuesday 10:00-12:00 in Store UP1 at DIKU and Thursday
+13:00-15:00 also in Store UP1 at DIKU.
 
 The exercise classes are both on Thursday, at 10:00-12:00 and 15:00-17:00
 respectively.
 
-September 2nd, marks the beginning of the course, with the first lecture.
+September 2nd marks the beginning of the course, with the first lecture.
 
 |       | Monday | Tuesday | Wednesday | Thursday | Friday |
 |-------|--------|---------|-----------|-----------|--------|
