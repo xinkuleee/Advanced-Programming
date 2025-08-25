@@ -8,8 +8,8 @@ useful to you, but is not required. We do not depend on very specific
 versions, but assume that you are using at least the following
 versions:
 
-* GHC 9.6
-* Cabal 3.10
+* GHC 9.8
+* Cabal 3.14
 
 If you follow this guide, you will install the right versions.
 
@@ -35,7 +35,7 @@ automatically done by `ghcup`.
 
 When `ghcup` is installed, you can run `ghcup tui` to enter a menu
 where you can install and "set" (activate) which version of GHC and
-Cabal you want to use. We recommend GHC 9.6.6 and Cabal 3.10.2.1.
+Cabal you want to use. We recommend GHC 9.8.4 and Cabal 3.14.2.0
 Newer versions will probably work, but these are what we use for
 testing.
 
