@@ -84,7 +84,7 @@ September 2nd marks the beginning of the course, with the first lecture.
 |       | Monday | Tuesday | Wednesday | Thursday | Friday |
 |-------|--------|---------|-----------|-----------|--------|
 | 10-12 | | Lecture | | Exercises | |
-| 13-15 | | | | Lecture | Café |
+| 13-15 | | | | Lecture | |
 | 15-17 | | | | Exercises | |
 
 There are no lectures in week 42, on account of the fall holiday.
