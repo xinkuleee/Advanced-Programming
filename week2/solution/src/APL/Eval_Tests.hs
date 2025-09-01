@@ -69,6 +69,11 @@ tests =
           )
           @?= Right (ValBool True),
       --
+      testCase "ForLoop" $
+        eval'
+          (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Add (Var "p") (Var "i")))
+          @?= Right (ValInt 45),
+      --
       testCase "Lambda/Apply" $
         eval'
           (Apply (Lambda "x" (Mul (Var "x") (Var "x"))) (CstInt 4))

@@ -104,7 +104,7 @@ Implement the `eval` function to make use of the `EvalM` monad. You should *not*
 directly construct (or destruct) `EvalM` values in the `eval` function; leave
 that to the `Monad` instance and the `failure` function.
 
-Skip `TryCatch` for now; we will implement that in the next task.
+Skip `TryCatch` for now; we will implement that in the following task.
 
 When you are done, you can use `runEval (eval [] e)` to evaluate an expression
 `e`. Remember to add appropriate tests to `APL_Tests.hs`.
@@ -307,6 +307,22 @@ eval (Add e1 e2) = do
 eval (Let var e1 e2) = do
   v1 <- eval e1
   localEnv (envExtend var v1) $ eval e2
+eval (ForLoop (loopparam, initial) (iv, bound) body) = do
+  initial_v <- eval initial
+  bound_v <- eval bound
+  case bound_v of
+    ValInt bound_int ->
+      loop 0 bound_int initial_v
+    _ ->
+      failure "Non-integral loop bound"
+  where
+    loop i bound_int loop_v
+      | i >= bound_int = pure loop_v
+      | otherwise = do
+          loop_v' <-
+            localEnv (envExtend iv (ValInt i) . envExtend loopparam loop_v) $
+              eval body
+          loop (succ i) bound_int loop_v'
 eval (Lambda var body) = do
   env <- askEnv
   pure $ ValFun env var body

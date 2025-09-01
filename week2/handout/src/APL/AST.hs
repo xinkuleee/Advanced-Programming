@@ -4,8 +4,6 @@ module APL.AST
   )
 where
 
-import Control.Monad (ap, liftM)
-
 type VName = String
 
 data Exp
@@ -20,6 +18,7 @@ data Exp
   | If Exp Exp Exp
   | Var VName
   | Let VName Exp Exp
+  | ForLoop (VName, Exp) (VName, Exp) Exp
   | Lambda VName Exp
   | Apply Exp Exp
   | TryCatch Exp Exp
