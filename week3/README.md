@@ -368,11 +368,12 @@ pExp =
 
 ### Excluding keywords
 
-In most programming languages, some names are *keywords* (sometimes
-called *reserved words*) which are not allowed as identifiers. APL has
-the following keywords: if, then, else, true, false, let, in, try,
-catch, print, put, get. Modify `lVName` such that it fails if the
-parsed name is a keyword.
+In most programming languages, some names are *keywords* (sometimes called
+*reserved words*) which are not allowed as identifiers. The subset of APL that
+we have implemented so far has the following keywords: `true`, `false`. Modify
+`lVName` such that it fails if the parsed name is a keyword. In future tasks,
+when you implement syntax that adds more keywords (e.g. `if`, `try`), make sure
+to modify your implementation such that they are recognised appropriately.
 
 #### Examples
 
@@ -406,20 +407,11 @@ but you will have subtle issues when we start to make use of keywords.
 <summary>Open this to see the answer</summary>
 
 ```Haskell
+-- Remember to extend this as you support more of APL!
 keywords :: [String]
 keywords =
-  [ "if",
-    "then",
-    "else",
-    "true",
-    "false",
-    "let",
-    "in",
-    "try",
-    "catch",
-    "print",
-    "put",
-    "get"
+  [ "true",
+    "false"
   ]
 
 
@@ -676,7 +668,7 @@ Exp ::= LExp
       | Exp "/" Exp
 ```
 
-Implement this grammar.
+Implement this grammar. Remember to handle the new keywords `if`, `then`, and `else`.
 
 #### Solution
 

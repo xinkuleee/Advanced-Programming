@@ -30,14 +30,7 @@ keywords =
     "then",
     "else",
     "true",
-    "false",
-    "let",
-    "in",
-    "try",
-    "catch",
-    "print",
-    "put",
-    "get"
+    "false"
   ]
 
 lVName :: Parser VName
