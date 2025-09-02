@@ -8,7 +8,7 @@ most explicit example of this idea.
 
 ## Slides and material
 
-TBA
+[Slides from Tuesday](1a.pdf)
 
 ## Suggested Reading
 
