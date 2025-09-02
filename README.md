@@ -23,6 +23,9 @@ than your sweet hacker nick.
 You are not *required* or *expected* to use Discord. We continue to monitor the
 Absalon discussion forum, and course announcements are posted solely on Absalon.
 
+**Do not use Discord for any kind of administrative matters, e.g., dispensation
+requests. These must go through email.**
+
 ## Preparation
 
 AP has a reputation as a difficult course, particularly for inexperienced
