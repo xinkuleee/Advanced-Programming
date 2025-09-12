@@ -11,6 +11,7 @@ import APL.AST (Exp (..), VName)
 data Val
   = ValInt Integer
   | ValBool Bool
+  | ValFun Env VName Exp
   deriving (Eq, Show)
 
 type Env = [(VName, Val)]
@@ -92,5 +93,19 @@ eval env (ForLoop (p, init) (i, bound) body) =
             Left err -> Left err
             Right initVal -> loop initVal 0
     Right _ -> Left "Non-integral loop bound"
-
+eval env (Lambda v body) =
+  Right (ValFun env v body)
+eval env (Apply e1 e2) =
+  case eval env e1 of
+    Left err -> Left err
+    Right (ValFun env' v body) ->
+      case eval env e2 of
+        Left err -> Left err
+        Right argVal ->
+          eval (envExtend v argVal env') body
+    Right _ -> Left "Trying to apply non-function value"
+eval env (TryCatch e1 e2) =
+  case eval env e1 of
+    Left _ -> eval env e2
+    Right v -> Right v
 -- TODO: Add cases after extending Exp.

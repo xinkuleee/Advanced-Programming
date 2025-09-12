@@ -1,6 +1,6 @@
 module APL.Eval_Tests (tests) where
 
-import APL.AST (Exp (..))
+import APL.AST (Exp (..), printExp)
 import APL.Eval (Val (..), envEmpty, eval)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
@@ -100,7 +100,77 @@ tests =
               ("i", CstInt 10)
               (Add (Var "p") (Var "i"))
           )
-          @?= Right (ValInt 45)
-          --
+          @?= Right (ValInt 45),
+      --
+      testCase "Lambda" $
+        eval
+          envEmpty
+          ( Let
+              "x" (CstInt 2)
+              ( Lambda "y" (Add (Var "x") (Var "y")))
+          )
+          @?= Right (ValFun [("x", ValInt 2)] "y" (Add (Var "x") (Var "y"))),
+      --
+        testCase "Function" $
+          eval
+            envEmpty
+            ( Apply (Let "x" (CstInt 2)
+                (Lambda "y" (Add (Var "x") (Var "y"))))
+                (CstInt 3)
+            )
+            @?= Right (ValInt 5),
+      --
+        testCase "TryCatch (no error)" $
+          eval
+            envEmpty
+            ( TryCatch
+                (Add (CstInt 2) (CstInt 3))
+                (CstInt 42)
+            )
+            @?= Right (ValInt 5),
+      --
+        testCase "TryCatch (with error)" $
+          eval
+            envEmpty
+            ( TryCatch
+                (Div (CstInt 2) (CstInt 0))
+                (CstInt 42)
+            )
+            @?= Right (ValInt 42),
+      --
+        testCase "printEXP (print Int)" $
+          printExp (CstInt 42) @?= "42",
+      --
+        testCase "printEXP (print Bool)" $
+          printExp (CstBool True) @?= "true",
+      --
+        testCase "printEXP (print Add)" $
+          printExp (Add (CstInt 2) (CstInt 3))
+            @?= "(2 + 3)",
+      --
+        testCase "printEXP (print If)" $
+          printExp (If (CstBool True) (CstInt 2) (CstInt 3))
+            @?= "(if true then 2 else 3)",
+      --
+        testCase "printEXP (print Let)" $
+          printExp (Let "x" (CstInt 2) (Add (Var "x") (CstInt 3)))
+            @?= "(let x = 2 in (x + 3))",
+      --
+        testCase "printEXP (print Lambda)" $
+          printExp (Lambda "x" (Add (Var "x") (CstInt 3)))
+            @?= "\\x -> (x + 3)",
+      --
+        testCase "printEXP (print Apply)" $
+          printExp (Apply (Lambda "x" (Add (Var "x") (CstInt 3))) (CstInt 2))
+            @?= "(\\x -> (x + 3)) 2",
+      --
+        testCase "printEXP (print try-catch)" $
+          printExp (TryCatch (Div (CstInt 2) (CstInt 0)) (CstInt 42))
+            @?= "(try (2 / 0) catch 42)",
+      --
+        testCase "printEXP (print forloop)" $
+          printExp (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Add (Var "p") (Var "i")))
+            @?= "(loop p = 0 for i < 10 do (p + i))"
+      --
           -- TODO - add more
     ]
