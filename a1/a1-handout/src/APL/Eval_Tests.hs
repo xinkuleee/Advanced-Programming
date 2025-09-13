@@ -95,60 +95,119 @@ tests =
       testCase "ForLoop" $
         eval
           envEmpty
-          ( ForLoop
-              ("p", CstInt 0)
-              ("i", CstInt 10)
-              (Add (Var "p") (Var "i"))
-          )
+          (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Add (Var "p") (Var "i")))
           @?= Right (ValInt 45),
       --
-      testCase "Lambda" $
+      testCase "Forloop(sub)" $
         eval
           envEmpty
-          ( Let
-              "x" (CstInt 2)
-              ( Lambda "y" (Add (Var "x") (Var "y")))
-          )
-          @?= Right (ValFun [("x", ValInt 2)] "y" (Add (Var "x") (Var "y"))),
+          (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Sub (Var "p") (Var "i")))
+          @?= Right (ValInt (-45)),
       --
-        testCase "Function" $
-          eval
-            envEmpty
-            ( Apply (Let "x" (CstInt 2)
-                (Lambda "y" (Add (Var "x") (Var "y"))))
-                (CstInt 3)
-            )
-            @?= Right (ValInt 5),
+      testCase "Forloop(mul)" $
+        eval
+          envEmpty
+          (ForLoop ("p", CstInt 1) ("i", CstInt 4) (Mul (Var "p") (Add (Var "i") (CstInt 1))))
+          @?= Right (ValInt 24),
       --
-        testCase "Apply evaluates function first: error in function" $
-          eval
-            envEmpty 
-            ( Apply (Var "f_missing") (CstInt 1) )
-            @?= Left "Unknown variable: f_missing",
+      testCase "Forloop(div)" $
+         eval
+          envEmpty
+          (ForLoop ("p", CstInt 24) ("i", CstInt 4) (Div (Var "p") (Add (Var "i") (CstInt 1))))
+          @?= Right (ValInt 1),
       --
-        testCase "Apply evaluates argument second: error in argument" $
-          eval
+      testCase "Forloop(pow)" $
+        eval
+          envEmpty
+            (ForLoop ("p", CstInt 2) ("i", CstInt 3) (Pow (Var "p") (Add (Var "i") (CstInt 1))))
+          @?= Right (ValInt 64),
+      --
+      testCase "Forloop(let)" $
+        eval
+          envEmpty
+          (ForLoop ("p", CstInt 0) ("i", CstInt 4) (Let "tmp" (Mul (Var "i") (CstInt 2)) (Add (Var "p") (Var "tmp"))))
+          @?= Right (ValInt 12),
+      --
+      testCase "Lambda1" $
+         eval
+          envEmpty
+          (Let "x" (CstInt 2) (Lambda "y" (Add (Var "x") (Var "y"))))
+          @?= Right (ValFun [("x",ValInt 2)] "y" (Add (Var "x") (Var "y"))),
+      --
+      testCase "Lambda2" $
+         eval
+          envEmpty
+          (Let "x" (CstInt 2) (Lambda "x" (Add (Var "x") (CstInt 1))))
+          @?= Right (ValFun [("x",ValInt 2)] "x" (Add (Var "x") (CstInt 1))),
+      --
+      testCase "Apply" $
+         eval
+          envEmpty
+          (Apply (Let "x" (CstInt 2) (Lambda "y" (Add (Var "x") (Var "y")))) (CstInt 3))
+          @?= Right (ValInt 5),
+      --
+      testCase "Apply(Lambda)" $
+        eval
+          envEmpty
+          (Apply (Lambda "x" (Mul (Var "x") (CstInt 2))) (Add (CstInt 3) (CstInt 4)))
+          @?= Right (ValInt 14),
+      --
+      testCase "Apply(Let)" $
+        eval
+          envEmpty
+          (Apply
+            (Let "a" (CstInt 10) (Lambda "b" (Add (Var "a") (Var "b"))))
+            (CstInt 5))
+          @?= Right (ValInt 15),
+      --
+      testCase "Apply(LetandMul)" $
+        eval
+          envEmpty
+          (Apply
+            (Let "a" (CstInt 10) (Lambda "b" (Add (Var "a") (Var "b"))))
+            (Mul (CstInt 2) (CstInt 3)))
+          @?= Right (ValInt 16),
+      --
+      testCase "Apply evaluates function first: error in function" $
+        eval
+          envEmpty 
+          ( Apply (Var "f_missing") (CstInt 1) )
+          @?= Left "Unknown variable: f_missing",
+      --
+      testCase "Apply evaluates argument second: error in argument" $
+        eval
             envEmpty 
             ( Apply (Lambda "x" (CstInt 1)) (Var "a_missing") )
             @?= Left "Unknown variable: a_missing",
       --
-        testCase "TryCatch (no error)" $
-          eval
-            envEmpty
-            ( TryCatch
+      testCase "TryCatch (no error)" $
+        eval
+          envEmpty
+          ( TryCatch
                 (Add (CstInt 2) (CstInt 3))
                 (CstInt 42)
-            )
-            @?= Right (ValInt 5),
+          )
+          @?= Right (ValInt 5),
       --
-        testCase "TryCatch (with error)" $
-          eval
-            envEmpty
-            ( TryCatch
-                (Div (CstInt 2) (CstInt 0))
-                (CstInt 42)
-            )
-            @?= Right (ValInt 42)
+      testCase "TryCatch (with error)" $
+        eval
+          envEmpty
+          ( TryCatch
+              (Div (CstInt 2) (CstInt 0))
+               (CstInt 42)
+          )
+          @?= Right (ValInt 42),
       --
-          -- TODO - add more
+      testCase "TryCatch(trycatch)" $
+        eval
+          envEmpty
+          (TryCatch (TryCatch(CstInt 0) (CstInt 1)) (CstInt 1))
+          @?= Right (ValInt 0),
+      --
+      testCase "TryCatch(trycatch2)" $
+        eval
+          envEmpty
+          (TryCatch (Div (CstInt 2) (CstInt 0)) (TryCatch(CstInt 3) (CstInt 4)))
+          @?= Right (ValInt 3)
+      --
     ]

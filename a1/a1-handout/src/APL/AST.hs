@@ -44,7 +44,7 @@ printExp (ForLoop (p,e1) (i,e2) body) =
   " for " ++ i ++ " < " ++ printExp e2 ++
   " do " ++ printExp body ++ ")"
 printExp (Lambda v body) =
-  "\\" ++ v ++ " -> " ++ printExp body
+  "(\\" ++ v ++ " -> " ++ printExp body ++ ")"
 printExp (Apply f x) =
   let fStr = case f of
                Var _     -> printExp f
@@ -57,6 +57,6 @@ printExp (Apply f x) =
                CstInt _  -> printExp x
                CstBool _ -> printExp x
                _         -> "(" ++ printExp x ++ ")"
-   in fStr ++ " " ++ xStr
+   in "(" ++ fStr ++ " " ++ xStr ++ ")"
 printExp (TryCatch e1 e2) =
   "(try " ++ printExp e1 ++ " catch " ++ printExp e2 ++ ")"
