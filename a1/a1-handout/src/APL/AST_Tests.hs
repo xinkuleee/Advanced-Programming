@@ -9,38 +9,72 @@ tests =
   testGroup
     "Prettyprinting"
     [
-        testCase "printExp (print Int)" $
-          printExp (CstInt 42) @?= "42",
+      testCase "CstInt" $
+        printExp (CstInt 10)
+        @?= "10",
       --
-        testCase "printExp (print Bool)" $
-          printExp (CstBool True) @?= "true",
+      testCase "CstBoolTrue" $
+        printExp (CstBool True)
+        @?= "true",
       --
-        testCase "printExp (print Add)" $
-          printExp (Add (CstInt 2) (CstInt 3))
-            @?= "(2 + 3)",
+      testCase "CstBoolFalse" $
+        printExp (CstBool False)
+        @?= "false",
       --
-        testCase "printExp (print If)" $
-          printExp (If (CstBool True) (CstInt 2) (CstInt 3))
-            @?= "(if true then 2 else 3)",
+      testCase "Add" $
+        printExp (Add (CstInt 2) (CstInt 3))
+        @?= "(2 + 3)",
       --
-        testCase "printExp (print Let)" $
-          printExp (Let "x" (CstInt 2) (Add (Var "x") (CstInt 3)))
-            @?= "(let x = 2 in (x + 3))",
+      testCase "Sub" $
+        printExp (Sub (CstInt 3) (CstInt 2))
+        @?= "(3 - 2)",
       --
-        testCase "printExp (print Lambda)" $
-          printExp (Lambda "x" (Add (Var "x") (CstInt 3)))
-            @?= "\\x -> (x + 3)",
+      testCase "Mul" $
+        printExp (Mul (CstInt 3) (CstInt 2))
+        @?= "(3 * 2)",
       --
-        testCase "printExp (print Apply)" $
-          printExp (Apply (Lambda "x" (Add (Var "x") (CstInt 3))) (CstInt 2))
-            @?= "(\\x -> (x + 3)) 2",
+      testCase "Div" $
+        printExp (Div (CstInt 3) (CstInt 2))
+        @?= "(3 / 2)",
       --
-        testCase "printExp (print try-catch)" $
-          printExp (TryCatch (Div (CstInt 2) (CstInt 0)) (CstInt 42))
-            @?= "(try (2 / 0) catch 42)",
+      testCase "Pow" $
+        printExp (Pow (CstInt 3) (CstInt 2))
+        @?= "(3 ** 2)",
       --
-        testCase "printExp (print forloop)" $
-          printExp (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Add (Var "p") (Var "i")))
-            @?= "(loop p = 0 for i < 10 do (p + i))"
+      testCase "Eql" $
+        printExp (Eql (CstInt 5) (CstInt 5))
+        @?= "(5 == 5)",
+      --
+      testCase "If" $
+        printExp (If (Eql  (CstInt 5) (CstInt 5)) (CstInt 1) (CstInt 0))
+        @?= "(if (5 == 5) then 1 else 0)",
+      --
+      testCase "Let" $
+        printExp (Let "x" (CstInt 1) (Add (Var "x") (CstInt 2)))
+        @?= "(let x = 1 in (x + 2))",
+      --
+      testCase "Forloop" $
+        printExp (ForLoop ("p", CstInt 0) ("i", CstInt 10) (Add (Var "p") (Var "i")))
+        @?= "(loop p = 0 for i < 10 do (p + i))",
+      --
+      testCase "Lambda" $
+        printExp (Lambda "x" (Add (Var "x") (CstInt 1)))
+        @?= "(\\x -> (x + 1))",
+      --
+      testCase "Apply(constant)" $
+        printExp (Apply (Lambda "x" (Add (Var "x") (CstInt 1))) (CstInt 5))
+        @?= "(((\\x -> (x + 1))) 5)",
+      --
+      testCase "Apply(exp)" $
+        printExp (Apply (Lambda "x" (Add (Var "x") (CstInt 1))) (Add (CstInt 2) (CstInt 3)))
+        @?= "(((\\x -> (x + 1))) ((2 + 3)))",
+      --
+      testCase "Apply(nest)" $
+        printExp (Apply (Apply (Lambda "x" (Lambda "y" (Add (Var "x") (Var "y")))) (CstInt 2)) (CstInt 3))
+        @?= "((((\\x -> (\\y -> (x + y)))) 2) 3)",
+      --
+      testCase "TryCatch" $
+        printExp (TryCatch (Div (CstInt 1) (CstInt 0)) (CstInt 999))
+          @?= "(try (1 / 0) catch 999)"
       --
     ]
