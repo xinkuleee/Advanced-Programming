@@ -116,6 +116,11 @@ tests =
           (ForLoop ("p", CstInt 24) ("i", CstInt 4) (Div (Var "p") (Add (Var "i") (CstInt 1))))
           @?= Right (ValInt 1),
       --
+      testCase "Forloop(div0)" $
+         eval
+          envEmpty
+          (ForLoop ("p", CstInt 24) ("i", CstInt 4) (Div (Var "p") (Var "i")))
+          @?= Left "Division by zero",
       testCase "Forloop(pow)" $
         eval
           envEmpty
@@ -140,7 +145,7 @@ tests =
           (Let "x" (CstInt 2) (Lambda "x" (Add (Var "x") (CstInt 1))))
           @?= Right (ValFun [("x",ValInt 2)] "x" (Add (Var "x") (CstInt 1))),
       --
-      testCase "Apply" $
+      testCase "Apply(let)" $
          eval
           envEmpty
           (Apply (Let "x" (CstInt 2) (Lambda "y" (Add (Var "x") (Var "y")))) (CstInt 3))
@@ -151,14 +156,6 @@ tests =
           envEmpty
           (Apply (Lambda "x" (Mul (Var "x") (CstInt 2))) (Add (CstInt 3) (CstInt 4)))
           @?= Right (ValInt 14),
-      --
-      testCase "Apply(Let)" $
-        eval
-          envEmpty
-          (Apply
-            (Let "a" (CstInt 10) (Lambda "b" (Add (Var "a") (Var "b"))))
-            (CstInt 5))
-          @?= Right (ValInt 15),
       --
       testCase "Apply(LetandMul)" $
         eval
@@ -177,8 +174,14 @@ tests =
       testCase "Apply evaluates argument second: error in argument" $
         eval
             envEmpty 
-            ( Apply (Lambda "x" (CstInt 1)) (Var "a_missing") )
+            (Apply (Lambda "x" (CstInt 1)) (Var "a_missing") )
             @?= Left "Unknown variable: a_missing",
+      --
+      testCase "Apply(lambda_apply)" $
+        eval
+            envEmpty 
+            (Apply (Lambda "x" (Apply (Var "x") (Var "x"))) (Lambda "x" (Apply (Var "x") (Var "x"))))
+            @?= Left "err",
       --
       testCase "TryCatch (no error)" $
         eval
